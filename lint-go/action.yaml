@@ -24,7 +24,7 @@ runs:
       uses: actions/setup-go@v3
       with:
         go-version: ${{ inputs.go-version }}
-        cache: ${{ !inputs.no-cache }}}
+        cache: ${{ !inputs.no-cache }}
         cache-dependency-path: ${{ inputs.working-directory }}
     - name: Test
       id: lint
