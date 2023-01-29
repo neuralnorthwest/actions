@@ -1,0 +1,28 @@
+name: Test Go
+description: Run Go tests
+inputs:
+  go-version:
+    description: Go version to use
+    required: true
+    default: "1.19"
+  working-directory:
+    description: Working directory
+    required: false
+    default: "."
+  test-flags:
+    description: Flags to pass to `go test`
+    required: false
+    default: ""
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Go ${{ inputs.go-version }}
+      uses: actions/setup-go@v3
+      with:
+        go-version: ${{ inputs.go-version }}
+    - name: Test
+      id: test
+      shell: bash
+      run: |
+        cd ${{ inputs.working-directory }}
+        go test -v ${{ inputs.test-flags }} ./...
