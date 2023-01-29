@@ -5,6 +5,10 @@ inputs:
     description: Go version to use
     required: true
     default: "1.19"
+  no-cache:
+    description: Disable caching
+    required: false
+    default: "false"
   working-directory:
     description: Working directory
     required: false
@@ -20,7 +24,8 @@ runs:
       uses: actions/setup-go@v3
       with:
         go-version: ${{ inputs.go-version }}
-        cache: true
+        cache: ${{ !inputs.no-cache }}
+        cache-dependency-path: ${{ inputs.working-directory }}
     - name: Test
       id: test
       shell: bash
