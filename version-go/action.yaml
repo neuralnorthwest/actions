@@ -1,0 +1,24 @@
+name: Detect Version Number Go
+description: Detect version number from Go code
+inputs:
+  version-file:
+    description: Path to version file
+    required: true
+    default: "version.go"
+outputs:
+  version:
+    description: Version number
+    value: ${{ steps.detect-version.outputs.version }}
+runs:
+  using: "composite"
+  steps:
+    - name: Detect version
+      id: detect-version
+      shell: bash
+      run: |
+        if ! version=$(grep -oP '(?<=const [vV]ersion = ")[^"]+' ${{ inputs.version-file }}); then
+          echo "Failed to detect version number from ${{ inputs.version-file }}"
+          exit 1
+        fi
+        echo "version=$version" >> $GITHUB_OUTPUT
+        echo "Version number detected: $version"
