@@ -5,25 +5,18 @@ inputs:
     description: buf version to use
     required: true
     default: "1.14.0"
-  no-cache:
-    description: Disable caching
-    required: false
-    default: "false"
   working-directory:
     description: Working directory
     required: false
     default: "."
-  generate-flags:
-    description: Flags to pass to `go generate`
-    required: false
-    default: ""
 runs:
   using: "composite"
   steps:
     - name: Set up buf ${{ inputs.buf-version }}
-      uses: bufbuild/buf-setup-action@${{ inputs.buf-version }}
+      uses: bufbuild/buf-setup-action@v1
       with:
         github_token: ${{ github.token }}
+        version: ${{ inputs.buf-version }}
     - name: Generate
       id: generate
       shell: bash
