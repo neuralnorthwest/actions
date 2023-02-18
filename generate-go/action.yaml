@@ -1,0 +1,34 @@
+name: Generate Go
+description: Generate Go code
+inputs:
+  go-version:
+    description: Go version to use
+    required: true
+    default: "1.19"
+  no-cache:
+    description: Disable caching
+    required: false
+    default: "false"
+  working-directory:
+    description: Working directory
+    required: false
+    default: "."
+  generate-flags:
+    description: Flags to pass to `go generate`
+    required: false
+    default: ""
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Go ${{ inputs.go-version }}
+      uses: actions/setup-go@v3
+      with:
+        go-version: ${{ inputs.go-version }}
+        cache: ${{ inputs.no-cache != 'true' }}
+        cache-dependency-path: ${{ inputs.working-directory }}
+    - name: Generate
+      id: generate
+      shell: bash
+      run: |
+        cd ${{ inputs.working-directory }}
+        go generate ${{ inputs.test-flags }} ./...
